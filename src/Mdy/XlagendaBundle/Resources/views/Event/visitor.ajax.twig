@@ -1,0 +1,35 @@
+{# src/Mdy/XlagendaBundle/Resources/views/Event/list.ajax.twig #}
+
+{% if listEvent is defined %}
+	{% for event in listEvent %}
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3 class="panel-title">{{ event.translate('fr').nom }}</h3>
+			</div>
+			<div class="panel-body">
+				Où : {{ event.lieu.translate('fr').nom }}
+				Quand : {% if event.fin is not empty %}du {{ event.debut|date('d/m/y') }} au {{ event.fin|date('d/m/y') }}{% else %} le {{event.debut|date('d/m/y') }}{% endif %}
+			</div>
+		</div>
+	{% endfor %}
+
+	<table class="table table-striped" id="events">
+	<tr><th>Nom</th><th>Description</th><th>Traduction</th><th>Action</th></tr>
+	{% for event in listEvent %}
+		<tr {% if event.publication == false %}style="bg-color: green";{% endif %}>
+			<td>{{ event.nom }}</td>
+			<td>{{ event.description|truncate(10, true) }}</td>
+			<td>{% if event.translate('de').nom|length > 0 and event.translate('de').description|length > 0%}
+			{{ event.translate('de').nom|length }} {{ event.translate('de').nom }}
+			DE => OK
+			{% endif %}
+			</td>
+			<td>
+				<a href="{{ path('mdy_xlagenda_event_edit', {'id' : event.id}) }}" ><span class="glyphicon glyphicon-edit" title="Modifier l'événement"></span></a>
+			</td>
+		</tr>
+	{% endfor %}
+	</table>
+{% else %}
+	<p>Pas d'événements à afficher</p>
+{% endif %}

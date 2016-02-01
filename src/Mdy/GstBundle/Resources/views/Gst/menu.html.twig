@@ -1,0 +1,78 @@
+{# src/Mdy/GstBundle/Resources/views/menu.html.twig #}
+
+{# menu des demandes #}
+<div class="dropdown">
+<button class="btn btn-default dropdown-toggle" type="button" id="dpmDemandes" data-toggle="dropdown" aria-expanded="true">
+	<span class="glyphicon glyphicon-wrench"></span> Demandes
+	<span class="caret"></span>
+</button>
+<ul class="dropdown-menu" role="menu" aria-labelledby="dpmDemandes">
+	{% if is_granted("ROLE_REDACTEUR")or is_granted("ROLE_ECHEVIN") %}
+		<li><a href="{{ path("mdy_gst_addIntervention") }}"><span class="glyphicon glyphicon-plus"></span> Ajouter</a></li>
+	{% endif %}
+	{% if is_granted("ROLE_USER") %}
+		<li><a href="{{ path("mdy_gst_listIntervention") }}"><span class="glyphicon glyphicon-list-alt"></span> Lister</a></li>
+		<li><a href="{{ path("mdy_gst_searchIntervention") }}"><span class="glyphicon glyphicon-search"></span> Rechercher</a></li>
+	{% endif %}
+	{% if is_granted("ROLE_SUPERVISEUR") %}
+		<li><a href="{{ path("mdy_gst_exportIntervention") }}"><span class="glyphicon glyphicon-print"></span> Imprimer</a></li>
+	{% endif %}
+</ul>
+</div>
+{# menu des lieux #}
+<div class="dropdown">
+<button class="btn btn-default dropdown-toggle" type="button" id="dpmLieux" data-toggle="dropdown" aria-expanded="true">
+	<span class="glyphicon glyphicon-globe"></span> Lieux
+	<span class="caret"></span>
+</button>
+<ul class="dropdown-menu" role="menu" aria-labelledby="dpmLieux">
+	{% if is_granted("ROLE_USER") %}
+		<li><a href="{{ path("mdy_gst_listLieu") }}"><span class="glyphicon glyphicon-list-alt"></span> Lister</a></li>
+	{% endif %}
+	{% if is_granted("ROLE_REDACTEUR") %}
+		<li><a href="{{ path("mdy_gst_addLieu") }}"><span class="glyphicon glyphicon-plus"></span> Ajouter</a></li>
+	{% endif %}
+</ul>
+</div>
+{# menu des équipes #}
+<div class="dropdown">
+<button class="btn btn-default dropdown-toggle" type="button" id="dpmEquipes" data-toggle="dropdown" aria-expanded="true">
+	<span class="glyphicon glyphicon-user"></span> Equipes
+	<span class="caret"></span>
+</button>
+<ul class="dropdown-menu" role="menu" aria-labelledby="dpmEquipes">
+	{% if is_granted("ROLE_USER") %}
+		<li><a href="{{ path("mdy_gst_listEquipe") }}"><span class="glyphicon glyphicon-list-alt"></span> Lister</a></li>
+	{% endif %}
+	{% if is_granted("ROLE_REDACTEUR") %}
+		<li><a href="{{ path("mdy_gst_addEquipe") }}"><span class="glyphicon glyphicon-plus"></span> Ajouter</a></li>
+	{% endif %}
+</ul>
+</div>
+{# menu des stats #}
+<div class="dropdown">
+<button class="btn btn-default dropdown-toggle" type="button" id="dpmStats" data-toggle="dropdown" aria-expand="true">
+	<span class="glyphicon glyphicon-stats"></span> Statistiques
+	<span class="caret"></span>
+</button>
+<ul class="dropdown-menu" role="menu" aria-labelledby="dpmStats">
+	<li><a href="{{ path("mdy_gst_stats") }}">Test</a></li>
+</ul>
+</div>
+
+{# menu des autres actions #}
+<div class="dropdown">
+<button class="btn btn-default dropdown-toggle" type="button" id="dpmActions" data-toggle="dropdown" aria-expanded="true">
+	Autres actions
+	<span class="caret"></span>
+</button>
+<ul class="dropdown-menu" role="menu" aria-labelledby="dpmActions">
+	{% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+	<li><a href="{{ path("fos_user_profile_show") }}"><span class="glyphicon glyphicon-user"></span> Mon profil</a></li>
+	<li><a href="{{ path("mdy_core_index") }}"><span class="glyphicon glyphicon-home"></span> Retour en page d'accueil</a></li>
+	<li><a href="{{ path("fos_user_security_logout") }}"><span class="glyphicon glyphicon-log-out"></span> Se déconnecter</a></li>
+	{% else %}
+	<li><a href="{{ path("fos_user_security_login") }}"><span class="glyphicon glyphicon-log-in"></span> Se connecter</a></li>
+	{% endif %}
+</ul>
+</div>

@@ -1,0 +1,45 @@
+{# src/Mdy/XlagendaBundle/Resources/views/layout.html.twig #}
+
+{% extends "MdyCoreBundle::layout.html.twig" %}
+{% if form is defined %}
+	{% form_theme form 'MdyXlagendaBundle:Form:fields.html.twig' %}
+{% endif %}
+{% block title %}
+Gestion des actualités (xlAgenda)
+{% endblock %}
+
+{% block encart %}
+	{% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+		Connecté en tant que {{ app.user.username }}
+	{% endif %}
+{% endblock %}
+
+{% block titre %}
+<h2>Gestion des événements</h2>
+{% endblock %}
+
+{% block menu %}
+{{ render(controller("MdyXlagendaBundle:Default:menu")) }}
+{% endblock %}
+
+{% block flashbag %}
+	{% set confirm = app.session.flashbag.get('confirm') %}
+	{% set info = app.session.flashbag.get('info') %}
+	{% if confirm|length > 0 %}
+		<div class="alert alert-success" role="alert">
+		{% for message in confirm %}
+			<p>{{ message }}</p>
+		{% endfor %}
+		</div>
+	{% endif %}
+	{% if info|length > 0 %}
+		<div class="alert alert-info" role="alert">
+		{% for message in info %}
+			<p>{{ message }}</p>
+		{% endfor %}
+		</div>
+	{% endif %}
+{% endblock %}
+
+{% block contenu %}
+{% endblock %}

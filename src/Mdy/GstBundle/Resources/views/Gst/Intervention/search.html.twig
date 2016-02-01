@@ -1,0 +1,62 @@
+{# src/Mdy/GstBundle/Resources/views/Gst/Intervention/search.html.twig #}
+
+{% extends ("MdyGstBundle::layout.html.twig") %}
+
+{% block contenu %}
+<h3>Rechercher une intervention</h3>
+
+{{form(form)}}
+{#
+<form action="{{ path('mdy_gst_searchIntervention', {'id': equipe.id}) }}" method="post">
+<a href="{{ path('mdy_gst_listEquipe') }}" class="btn btn-success" role="button">Retour à la liste des équipes</a>
+<input type="submit" value="Supprimer" class="btn btn-danger"/>
+{{ form_rest(form) }}
+</form>#}
+
+{% if listInterventions|length > 0 %}
+<table class="table table-hover">
+	<tr><th></th><th>Num</th><th>Objet</th><th>Date de demande</th><th>Demandeur</th><th>Remarques</th><th>Action</th></tr>
+	<tbody>
+	{% for intervention in listInterventions %}
+		<tr>
+			<td>
+			{% if intervention.equipes is empty %}
+				<img src="{{asset('bundles/mdycore/images/orange.png')}}" class="icone" title="Assignation requise" />
+			{% endif %}
+			{% if (intervention.accEchReq == true) and (intervention.approbations is empty) %}
+				<img src="{{asset('bundles/mdycore/images/bleu.png')}}" class="icone" title="Approbation échevin requise" />
+			{% endif %}
+			{% if (intervention.accDirReq == true) and (intervention.approbations is empty) %}
+				<img src="{{asset('bundles/mdycore/images/fucia.png')}}" class="icone" title="Approbation directrice requise" />
+			{% endif %}
+			</td>
+			<td>[{{intervention.numero}}]</td>
+			<td>{{ intervention.objet }}</td>
+			<td>{{intervention.dateDemande|date('d/m/Y')}}</td>
+			<td>{{intervention.demandeur}}</td>
+			<td>{{intervention.remarques|length}}</td>
+			<td>
+				<a href="{{ path('mdy_gst_viewIntervention', {'id': intervention.id}) }}"><span class="glyphicon glyphicon-eye-open" title="Voir les détails"></span></a>
+				{% if is_granted("ROLE_REDACTEUR") %}
+					<a href="{{ path('mdy_gst_editIntervention', {'id': intervention.id}) }}"><span class="glyphicon glyphicon-edit" title="Modifier la demande"></span></a>
+				{% endif %}
+				{% if is_granted("ROLE_SUPERVISEUR") %}
+					<a href="{{path('mdy_gst_removeIntervention', {'id': intervention.id})}}"><span clas="glyphicon glyphicon-remove" title="Supprimer la demande"></span></a>
+					{% if intervention.equipes is empty %}
+						<a href="{{ path('mdy_gst_assigneEquipe', {'id': intervention.id}) }}"><span class="glyphicon glyphicon-wrench" title="Assigner une équipe"></span></a>
+					{%endif%}
+				{% endif %}
+				<a href="{{ path('mdy_gst_addRemarque', {'id': intervention.id}) }}"><span class="glyphicon glyphicon-comment" title="Ajouter une remarque"></span></a>
+				{% if is_granted("ROLE_REDACTEUR") and intervention.dateCloture == null %}
+					<a href="{{ path('mdy_gst_clotureIntervention', {'id': intervention.id}) }}"><span class="glyphicon glyphicon-lock" title="Clôturer la demande"></span></a>
+				{% endif %}
+			</td>
+		</tr>
+	{% endfor %}
+	</tody>
+	</table>
+{% else %}
+<p class="warning">Aucune demande a afficher.</p>
+{% endif %}
+
+{% endblock %}

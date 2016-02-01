@@ -1,0 +1,103 @@
+# gestion des routes pour Rubrique
+mdy_xlagenda_rubrique_list:
+    path:       /rubrique/{filter}
+    defaults:   { _controller: MdyXlagendaBundle:Rubrique:list, filter: none }
+    requirements:
+        filter: none|dele
+
+mdy_xlagenda_rubrique_add:
+    path:       /rubrique/add
+    defaults:   { _controller: MdyXlagendaBundle:Rubrique:add }
+
+mdy_xlagenda_rubrique_edit:
+    path:       /rubrique/edit/{id}
+    defaults:   { _controller: MdyXlagendaBundle:Rubrique:edit }
+    requirements:
+        id:     \d*
+
+mdy_xlagenda_rubrique_delete:
+    path:       /rubrique/delete/{id}
+    defaults:   { _controller: MdyXlagendaBundle:Rubrique:delete }
+    requirements:
+        id:     \d*
+
+mdy_xlagenda_rubrique_restore:
+    path:       /rubrique/restore/{id}
+    defaults:   { _controller: MdyXlagendaBundle:Rubrique:restore }
+    requirements:
+        id:     \d*
+
+# gestion des routes pour Lieu
+mdy_xlagenda_lieu_list:
+    path:       /lieu/{filter}
+    defaults:   { _controller: MdyXlagendaBundle:Lieu:list, filter: none }
+    requirements:
+        filter:  none|dele
+
+mdy_xlagenda_lieu_add:
+    path:       /lieu/add
+    defaults:  { _controller: MdyXlagendaBundle:Lieu:add }
+    
+mdy_xlagenda_lieu_edit:
+    path:       /lieu/edit/{id}
+    defaults:   { _controller: MdyXlagendaBundle:Lieu:edit }
+    requirements:
+        id:     \d*
+
+mdy_xlagenda_lieu_delete:
+    path:       /lieu/delete/{id}
+    defaults:   { _controller: MdyXlagendaBundle:Lieu:delete }
+    requirements:
+        id:     \d*
+
+# gestion des routes pour Event
+mdy_xlagenda_event_list:
+    path:       /events/{filter}
+    defaults:   { _controller: MdyXlagendaBundle:Event:list, filter: none }
+    requirements:
+        filter: none|dele
+    
+mdy_xlagenda_event_add:
+    path:       /event/add
+    defaults:   { _controller: MdyXlagendaBundle:Event:add }
+
+mdy_xlagenda_event_edit:
+    path:       /event/edit/{id}
+    defaults:   { _controller: MdyXlagendaBundle:Event:edit }
+    requirements:
+        id:     \d*
+
+mdy_xlagenda_event_delete:
+    path:       /event/delete/{id}
+    defaults:   { _controller: MdyXlagendaBundle:Event:delete }
+    requirements:
+        id:     \d*
+
+mdy_xlagenda_event_view:
+    path:       /event/{id}
+    defaults:   { _controller: MdyXlagendaBundle:Event:view }
+    requirements:
+        id:     \d*
+
+# gestion des routes pour Contact
+mdy_xlagenda_contact_add:
+    path:   /contact/add
+    defaults: { _controller: MdyXlagendaBundle:Contact:add }
+
+mdy_xlagenda_contact_list:
+    path:   /contacts
+    defaults: { _controller: MdyXlagendaBundle:Contact:list, filter: none }
+    requirements:
+        filter: none|dele
+
+mdy_xlagenda_contact_edit:
+    path:   /contact/edit/{id}
+    defaults: { _controller: MdyXlagendaBundle:Contact:edit }
+    requirements:
+        id: \d*
+
+mdy_xlagenda_contact_delete:
+    path:   /contact/delete/{id}
+    defaults: { _controller: MdyXlagendaBundle:Contact:delete }
+    requirements:
+        id: \d*

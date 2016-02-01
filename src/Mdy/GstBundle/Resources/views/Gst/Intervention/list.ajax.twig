@@ -1,0 +1,106 @@
+{#
+/**
+ * File :	list.ajax.twig
+ * Bundle : MdyGstBundle
+ * Path :	src/Mdy/GstBundle/Resources/views/Gst/Intervention
+ * Since :	--
+ * Update :	28/01/2016
+ * Author :	R. Threis
+ */
+#}
+{% if listIntervention is not empty %}
+	<table class="table table-hover">
+		<tr><th></th><th>Num</th><th>Objet</th><th>Date de demande</th><th>Demandeur</th><th>Remarques</th><th>Action</th></tr>
+		<tbody>
+		{% for intervention in listIntervention %}
+			<tr>
+				<td>
+				{% if intervention.equipes is empty %}
+					<img src="{{asset('bundles/mdycore/images/orange.png')}}" class="icone" title="Assignation requise" />
+				{% endif %}
+				{% set appDir = 1 %}
+				{% set appEch = 1 %}
+				
+				{% if intervention.approbations is empty %}
+					{% if intervention.accDirReq == true %}
+					{% set appDir = 0 %}
+					{% elseif intervention.accEchReq == true %}
+					{% set appEch = 0 %}
+					{% endif %}
+				{% else %}
+					{% for approbation in intervention.approbations %}
+						{% if intervention.accDirReq == true and approbation.roleApprobateur == "ROLE_DIRECTEUR"%}
+							{% set appDir = 0 %}
+						{% endif %}
+						{% if intervention.accEchReq == true and approbation.roleApprobateur == "ROLE_ECHEVIN" %}
+							{% set appEch = 0 %}
+						{% endif %}
+					{% endfor %}
+				{% endif %}
+				{% if "ROLE_ECHEVIN" in intervention.auteur.roles %}
+					{% set appEch = 0 %}
+				{% endif %}
+				{% if "ROLE_DIRECTEUR" in intervention.auteur.roles %}
+					{% set appDir = 0 %}
+				{% endif %}
+				{% if appDir == 0 %}
+					<img src="{{asset('bundles/mdycore/images/fucia.png')}}" class="icone" title="Approbation directrice requise" />
+				{% endif %}
+				{% if appEch == 0 %}
+					<img src="{{asset('bundles/mdycore/images/bleu.png')}}" class="icone" title="Approbation échevin requise" />
+				{% endif %}
+				</td>
+				<td>[{{intervention.numero}}]</td>
+				<td>{{ intervention.objet }}</td>
+				<td>{{intervention.dateDemande|date('d/m/Y')}}</td>
+				<td>{{intervention.demandeur}}</td>
+				<td>{{intervention.remarques|length}}</td>
+				<td>
+					<a href="{{ path('mdy_gst_viewIntervention', {'id': intervention.id}) }}"><span class="glyphicon glyphicon-eye-open" title="Voir les détails"></span></a>
+					{% if intervention.deletedAt == null %}
+						{% if (is_granted("ROLE_ECHEVIN") or is_granted("ROLE_DIRECTEUR")) and intervention.printed == null %}
+							<a href="{{ path('mdy_gst_approuveIntervention', {'id': intervention.id}) }}"><span class="glyphicon glyphicon-check" title="Approuver"></span></a>
+						{%endif %}
+						{% if is_granted("ROLE_REDACTEUR") and intervention.printed == null%}
+							<a href="{{ path('mdy_gst_editIntervention', {'id': intervention.id}) }}"><span class="glyphicon glyphicon-edit" title="Modifier la demande"></span></a>
+						{% endif %}
+						{% if is_granted("ROLE_SUPERVISEUR") %}
+							<a href="{{path('mdy_gst_removeIntervention', {'id': intervention.id})}}"><span class="glyphicon glyphicon-remove" title="Supprimer la demande"></span></a>
+							{% if intervention.equipes is empty %}
+								<a href="{{ path('mdy_gst_assigneEquipe', {'id': intervention.id}) }}"><span class="glyphicon glyphicon-wrench" title="Assigner une équipe"></span></a>
+							{%endif%}
+						{% endif %}
+						{% if intervention.dateCloture == null %}
+						<a href="{{ path('mdy_gst_addRemarque', {'id': intervention.id}) }}"><span class="glyphicon glyphicon-comment" title="Ajouter une remarque"></span></a>
+						{% endif %}
+						{% if is_granted("ROLE_REDACTEUR") and intervention.dateCloture == null and intervention.printed != null %}
+							<a href="{{ path('mdy_gst_clotureIntervention', {'id': intervention.id}) }}"><span class="glyphicon glyphicon-lock" title="Clôturer l'intervention"></span></a>
+						{% endif %}
+					{% endif %}
+				</td>
+			</tr>
+		{% endfor %}
+		</tody>
+	</table>
+	<div>
+		<ul class="pagination">
+		{% if page == 1 %}
+			<li class="disabled"><a href="{{ path('mdy_gst_listIntervention', {'filter' : filtre, 'page': page-1}) }}" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
+		{% else %}
+			<li><a href="{{ path('mdy_gst_listIntervention', {'filter' : filtre, 'page': page-1}) }}" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
+		{% endif %}
+		{% for p in range(1,nombrePage) %}
+			<li {% if p == page %} class="active"{% endif %}>
+				<a href="{{ path('mdy_gst_listIntervention', {'filter' : filtre, 'page': p}) }}">{{ p }}</a>
+			</li>
+		{% endfor %}
+		{% if page == nombrePage %}
+			<li class="disabled"><a href="{{ path('mdy_gst_listIntervention', {'filter' : filtre, 'page': page+1}) }}" aria-label="Previous"><span aria-hidden="true">&raquo;</span></a></li>
+		{% else %}
+			<li><a href="{{ path('mdy_gst_listIntervention', {'filter' : filtre, 'page': page+1}) }}" aria-label="Previous"><span aria-hidden="true">&raquo;</span></a></li>
+		{% endif %}
+		</ul>
+	</div>
+{% else %}
+<p class="warning">Aucune demande a afficher.</p>
+{% endif %}

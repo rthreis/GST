@@ -1,0 +1,12 @@
+{# src/Mdy/GstBundle/Resources/views/Gst/Equipe/edit.html.twig #}
+
+{% extends ("MdyGstBundle::layout.html.twig") %}
+
+{% block equipe %}
+{{ render(controller("MdyGstBundle:Equipe:menu")) }}
+{% endblock %}
+
+{% block contenu %}
+<h3>Modifier une équipe</h3>
+{{ form(form) }}
+{% endblock %}

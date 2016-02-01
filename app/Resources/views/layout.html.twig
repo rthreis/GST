@@ -1,0 +1,43 @@
+{# app/Resources/views/layout.html.twig #}
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>{% block title %}{% endblock %}</title>
+	{% stylesheets '@MdyGstBundle/Resources/public/css/*' %}
+		<link rel="stylesheet" href="{{ asset_url }}" type="text/css" >
+		<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" type="text/css" >
+	{% endstylesheets %}
+</head>
+<body>
+	<div class="container">
+		<div id="header" class="jumbotron">
+			{% block titre %}{% endblock %}
+		</div>
+		<div class="row">
+			<div id="menu" class="col-md-3">
+				{% block menu %}
+				{{ render(controller("MdyCoreBundle:Core:menu")) }}
+				{% endblock %}
+			</div>
+			<div id="content" class="col-md-9">
+				{% block flashbag %}
+				<p>block flashbag dans app/Resources/views/layout.html.twig</p>
+				{% endblock %}
+				
+				{% block contenu %}
+				{% endblock %}
+			</div>
+		</div>
+		<hr>
+		<footer>
+			<p>Réalisé par : R. Threis</p>
+		</footer>
+	</div>
+	{% block javascripts %}
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+		<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+	{% endblock %}
+</body>
+</html>

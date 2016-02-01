@@ -1,0 +1,136 @@
+{#
+/**
+ * File :	export.html.twig
+ * Bundle : MdyGstBundle
+ * Path :	src/Mdy/GstBundle/Resources/views/Gst/Intervention
+ * Since :	--
+ * Update :	07/10/2015
+ * Author :	R. Threis
+ */
+#}
+{% extends ("MdyGstBundle::layout.html.twig") %}
+
+{% block contenu %}
+{# on vérifie si la liste contient quelques choses #}
+{% if listIntervention|length > 0 %} 
+	{# on réalise une boucle pour chaque intervention de la liste #}
+	{% for intervention in listIntervention %}<br>
+		{# on vérifie si plusieurs équipes sont assignées à l'intervention #}
+		{% if intervention.equipes|length > 1 %}
+			{# Si oui, on boucle pour chaque équipe, et on affiche l'ensemble des datas #}
+			{% for equipe in intervention.equipes %}
+			<div class="intervention container" id="intervention-{{ intervention.id }}">
+				{% set hauteur = intervention.equipes|length/2%}
+				<div class="row{{hauteur|round}}" >
+					<div class="col-md-4">{{intervention.auteur|upper|slice(0,2)}}&nbsp;&nbsp;<label>Service :</label>
+						{% for equipe in intervention.equipes %}
+							{{ equipe.nom }}
+							{% if not loop.last %}, {%endif%}
+						{% endfor %}
+					</div>
+					<div class="col-md-4"><label>Date :</label> {{ intervention.dateDemande|date('d/m/Y') }}</div>
+					<div class="col-md-4"><label>N°:</label> {{ intervention.numero }}</div>
+				</div>
+				<div class="row">
+					<div class="col-md-12">
+						<label>Demandeur : </label> {{ intervention.demandeur }}
+						{% if intervention.contact is not empty %}
+							<label>Tél./gsm : </label>{{intervention.contact}}
+						{% endif %}
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-6"><label>Où :</label> 
+						{% if intervention.lieu.nom is not empty %}	{{intervention.lieu.nom}}
+						{% endif %}
+						{% if intervention.lieu.rue is not empty %}
+							{{intervention.lieu.rue}}
+						{%endif%}
+						{% if intervention.lieu.numero is not empty %}
+							, {{intervention.lieu.numero}}
+						{%endif%}
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-12"><label>Objet :</label> {{ intervention.objet }}</div>
+				</div>
+				<div class="row3">
+					<div class="col-md-12">{{ intervention.contenu }}</div>
+				</div>
+				<div class="row2">
+					<div class="col-md-12">
+						<label>Travaux complémentaires :</label>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-4"><label>Temps de prestations :&nbsp;</label></div><div class="col-md-4"><label>(Nbre ouvriers :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)</label></div>
+					<div class="col-md-4"><label>Date de fin d'intervention :</label>&nbsp;</div>
+				</div>
+				<div class="row">
+					<div><label>Signature lisible :</label></div>
+				</div>
+			</div>
+			<div class="jump"></div>
+			{% endfor %}
+		{% else %}
+		{# Si une seule équipe est assignée, on affiche les données une fois #}
+		<div class="intervention container" id="intervention-{{ intervention.id }}">
+			<div class="row">
+				<div class="col-md-4">{{intervention.auteur|upper|slice(0,2)}}&nbsp;&nbsp;<label>Service : </label>
+					{% for equipe in intervention.equipes %}
+						{{ equipe.nom }}
+						{% if not loop.last %}, {%endif%}
+					{% endfor %}
+				</div>
+				<div class="col-md-4"><label>Date :</label> {{ intervention.dateDemande|date('d/m/Y') }}</div>
+				<div class="col-md-4"><label>N°:</label> {{ intervention.numero }}</div>
+			</div>
+			<div class="row">
+				<div class="col-md-4">
+					<label>Demandeur :</label> {{ intervention.demandeur }}
+					{% if intervention.contact is not empty %}
+						<label>Tél./gsm : </label>{{intervention.contact}}
+					{% endif %}
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-6"><label>Où :</label>
+					{% if intervention.lieu.nom is not empty %}
+						{{intervention.lieu.nom}}
+					{% endif %}
+					{% if intervention.lieu.rue is not empty %}
+						{{intervention.lieu.rue}}
+					{%endif%}
+					{% if intervention.lieu.numero is not empty %}
+						, {{intervention.lieu.numero}}
+					{%endif%}
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12"><label>Objet :</label> {{ intervention.objet }}</div>
+			</div>
+			<div class="row3">
+				<div class="col-md-12">{{ intervention.contenu }}</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12"><label>Travaux complémentaires :</label><br/><br/></div>
+			</div>
+			<div class="row">
+				<div class="col-md-4"><label>Temps de prestations :&nbsp;</label></div><div class="col-md-4"><label>(Nbre ouvriers :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)</label></div>
+				<div class="col-md-4"><label>Date de fin d'intervention :</label>&nbsp;</div>
+			</div><
+			<div class="row">
+				<div><label>Signature lisible :</label></div>
+			</div>
+		</div>
+		{% endif %}
+		{# ajout d'une clause permettant de voir si il reste un élément
+			et dans l'affirmative, ajout un saut de page#}
+		{% if not loop.last %}
+			<div class="jump"></div>
+		{% endif %}
+	{% endfor %}
+{% else %}
+<p class="alert alert-warning" role="alert">Aucune note de service à afficher.</p>
+{% endif %}
+{% endblock %}

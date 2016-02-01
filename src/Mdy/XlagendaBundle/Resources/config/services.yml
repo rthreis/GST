@@ -1,0 +1,7 @@
+services:
+#    mdy_xlagenda.example:
+#        class: Mdy\XlagendaBundle\Example
+#        arguments: [@service_id, "plain_value", %parameter%]
+    mdy_xlagenda.existor:
+        class:  Mdy\XlagendaBundle\Existor\XlaExistor
+        arguments:  [@doctrine.orm.entity_manager]

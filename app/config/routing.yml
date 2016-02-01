@@ -1,0 +1,5 @@
+# app/config/routing.yml
+
+mdy_core:
+    resource: "@MdyCoreBundle/Resources/config/routing.yml"
+    prefix:   /mdy

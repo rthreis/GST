@@ -1,0 +1,14 @@
+{# src/Mdy/GstBundle/Resources/views/Gst/Internvention/cloture.html.twig #}
+
+{% extends ("MdyGstBundle::layout.html.twig") %}
+
+{% block contenu %}
+	{% for message in app.session.flashbag.get('info') %}
+		<p>{{ message }}</p>
+	{% endfor %}
+<h3>Clôture intervention</h3>
+{{form(form)}}
+{% endblock %}
+
+{% block javascripts %}
+{% endblock %}

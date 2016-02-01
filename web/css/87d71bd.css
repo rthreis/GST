@@ -1,0 +1,83 @@
+
+div.thumbnails{
+background-color: #eee;
+height: 120px;
+padding: 10px;
+}
+img.thumbs{
+width: 100px;
+height: 100px;
+cursor: pointer;
+box-shadow: 5px 5px 2px grey;
+}
+img.thumbs:hover{
+box-shadow: none;
+}
+img.thumbs:click{
+width: 800px;
+}
+img.icone{
+width: 25px;
+height: 25px;
+}
+@media print{
+@page {
+margin: 1cm;
+}
+body{
+background-color: white !important;
+width: 21cm;
+font-size: 12pt;
+}
+div{
+font: Verdana 12pt;
+}
+div.intervention{
+width: auto;
+max-height: 148.5mm;
+}
+div.row{
+}
+.no-print{
+display: none;
+}
+div.printable{
+display: show;
+}
+.col-md-1{
+display: inline-block;
+width: 10%;
+}
+.col-md-4{
+display: inline-block;
+width: 33%;
+}
+.col-md-6{
+display: inline-block;
+width: 8.5cm;
+}
+.col-md-8{
+display: inline-block;
+width: 66%;
+}
+.col-md-10{
+width: 100%;
+padding-bottom: 1cm;
+min-height: 8cm;
+}
+div.jump{
+page-break-after: always;
+}
+}
+.even{
+background-color: #cccccc;
+}
+.odd{
+background-color: #ffffff;
+}
+table{
+width: 100%;
+}
+table th, table td{
+border-right: 1px dotted black;
+}

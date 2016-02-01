@@ -1,0 +1,91 @@
+{#
+/**
+ * File :	edit.html.twig
+ * Bundle : MdyGstBundle
+ * Path :	src/Mdy/GstBundle/Resources/views/Gst/Intervention
+ * Since :	--
+ * Update :	01/10/2015
+ * Author :	R. Threis
+ */
+#}
+{% extends ("MdyGstBundle::layout.html.twig") %}
+
+{% block contenu %}
+<h3>Modifier une intervention</h3>
+{{form(form)}}
+{% endblock %}
+{% block javascripts %}
+{{ parent() }}
+<script type="text/javascript">
+$(document).ready(function(){
+var $container = $('div#mdy_gstbundle_intervention_edit_fichiers');
+var $lienAjout = $('<a href="#" id="ajout_fichier" class="btn btn-primary">Ajouter un fichier</a>');
+$container.append($lienAjout);
+
+$lienAjout.click(function(e){
+	ajouterFichier($container);
+	e.preventDefault();
+	return false;
+});
+var index = $container.find(':input').length;
+if( index == 0){
+	/*ajouterFichier($container);*/
+}
+else {
+	$container.children('div').each(function(){
+		ajouterLienSuppression($(this));
+	});
+}
+
+function ajouterFichier($container){
+	var $prototype = $($container.attr('data-prototype').replace(/__name__label__/g, 'Fichier n°' + (index+1)).replace(/__name__/g, index));
+	ajouterLienSuppression($prototype);
+	$container.append($prototype);
+	index++;
+}
+function ajouterLienSuppression($prototype){
+	$lienSuppression = $('<a href="#" class="btn btn-danger">Supprimer</a>');
+	$prototype.append($lienSuppression);
+	$lienSuppression.click(function(e){
+		$prototype.remove();
+		e.preventDefault();
+		return false;
+	});
+}
+
+var $formAddLieu = $('#mdy_gst_form_addLieu');
+var $lienAddLieu = $('#mdy_gstbundle_intervention_edit_addLieu');
+
+
+$lienAddLieu.click(function(e){
+$.ajax({
+		type: "GET",
+		url: "{{ path('mdy_gst_addLieu') }}",
+		cache: true,
+		success: function(data){
+			$('#myModal').modal('show');
+			$('div.modal-body').html(data);
+			$( "#mdy_gst_form_addLieu" ).submit(function( event ) {
+				var donnees = {};
+					  $.each( $( "#mdy_gst_form_addLieu" ).serializeArray(), function(i, field) {
+						donnees[field.name] = field.value;
+					  });
+				$.ajax({
+					type        : "POST",
+					url         : "{{ path('mdy_gst_addLieu')}}",
+					data        : donnees,
+					success     : function(data) {
+						$('div.modal-body').html(data['message']);
+						$('#mdy_gstbundle_intervention_lieu').html(data['liste']);
+						$('#myModal').modal('hide');
+					}
+				});
+				event.preventDefault();
+			});
+		}
+	});
+	return false;
+});
+});
+</script>
+{% endblock %}

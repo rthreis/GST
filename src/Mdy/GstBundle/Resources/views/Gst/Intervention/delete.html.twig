@@ -1,0 +1,18 @@
+{# src/Mdy/GstBundle/Resources/views/Gst/Intervention/delete.html.twig #}
+
+{% extends ("MdyGstBundle::layout.html.twig") %}
+
+{% block contenu %}
+<h3>Supprimer la demande</h3>
+<p>Êtes vous certains de vouloir supprimer la demande n° : {{ intervention.numero }} ?</p>
+
+
+<form action="{{ path('mdy_gst_removeIntervention', {'id': intervention.id}) }}" method="post">
+<label for="justify">Justificatif de suppression</label><br/>
+<textarea class="form-control" id="justify" name="justify"></textarea><br/>
+<a href="{{ path('mdy_gst_listIntervention', {'filter':"none"}) }}" class="btn btn-success" role="button">Retour à la liste des demandes</a>
+<input type="submit" value="Supprimer" class="btn btn-danger"/>
+{{ form_rest(form) }}
+</form>
+
+{% endblock %}

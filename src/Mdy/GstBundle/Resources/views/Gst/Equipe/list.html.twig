@@ -1,0 +1,41 @@
+{# src/Mdy/GstBundle/Resources/views/Gst/Equipe/list.html.twig #}
+
+{% extends ("MdyGstBundle::layout.html.twig") %}
+
+{% block equipe %}
+{{ render(controller("MdyGstBundle:Equipe:menu")) }}
+{% endblock %}
+
+{% block contenu %}
+<h3>Liste des équipes</h3>
+{% if is_granted("ROLE_REDACTEUR") %}
+<a href="{{path('mdy_gst_addEquipe')}}" class="btn btn-info" role="button"><span class="glyphicon glyphicon-plus" ></span>Ajouter une équipe</a>
+{% if filter != "deleted" %}
+	<a href="{{ path('mdy_gst_listEquipe', {'filter': 'deleted'}) }}" class="btn btn-warning" role="button"><span class="glyphicon glyphicon-trash"></span>Afficher les équipes supprimées</a>
+{% endif %}
+{% if filter == "deleted" %}
+	<a href="{{ path('mdy_gst_listEquipe', {'filter': 'none'}) }}" class="btn btn-warning" role="button">Afficher les équipes non supprimées</a>
+{% endif %}
+{% endif %}
+{% if listEquipes is defined %}
+	<table class="table table-striped">
+	<tr><th>Nom</th><th>Action</th></tr>
+	{% for equipe in listEquipes %}
+		<tr>
+			<td>{{ equipe.nom }}</td>
+			<td>
+			{% if is_granted("ROLE_REDACTEUR") %}
+				<a href="{{ path('mdy_gst_editEquipe', {'id' : equipe.id}) }}" ><span class="glyphicon glyphicon-edit" title="Modifier l'équipe"></span></a>
+			{% endif%}
+			{% if is_granted("ROLE_SUPERVISEUR") and filter != "deleted" %}
+				<a href="{{ path('mdy_gst_removeEquipe', {'id' :equipe.id}) }}" ><span class="glyphicon glyphicon-remove" title="Supprimer l'équipe"></span></a>
+			{% elseif is_granted("ROLE_SUPERVISEUR") and filter == "deleted" %}
+				<a href="{{ path('mdy_gst_restoreEquipe', {'id' :equipe.id}) }}" ><img src="{{ asset('bundles/mdycore/images/accept.png') }}" class="icone" /></a>
+			{% endif%}
+			
+			</td>
+		</tr>
+	{% endfor %}
+	</table>
+{% endif %}
+{% endblock %}

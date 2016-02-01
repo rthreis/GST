@@ -1,0 +1,64 @@
+{# src/Mdy/GstBundle/Resources/views/Gst/Statistic/stats.html.twig #}
+
+{% extends ("MdyGstBundle::layout.html.twig") %}
+
+{% block contenu %}
+<h3>Statistiques</h3>
+<input type="radio" value="inli" name="filtre">Interventions par lieu</input>&nbsp;
+<input type="radio" value="ineq" name="filtre">Interventions par équipe</input>&nbsp;
+<input type="radio" value="depe" name="filtre">Demande par période</input>&nbsp;
+<input type="radio" value="eqli" name="filtre">Équipes par lieu</input>&nbsp;
+{% block data %}
+<div id="data" name="data">
+<div id="map" style="width:100%; border: 1px solid black; height:400px;"></div>
+</div>
+{% endblock %}
+
+{% endblock %}
+
+{% block javascripts %}
+{{ parent() }}
+<script type="text/javascript">
+$(document).ready(function(){
+	$("input[name= 'filtre']").change(function(e){
+		e.preventDefault();
+		var donnees = {};
+			donnees["filtre"] = this.value;
+		$.ajax({
+			type: "POST",
+			url: "{{ path('mdy_gst_calculate') }}",
+			data: donnees,
+			cache: true,
+			beforeSend: function(){
+					$('div.modal-body').html('<img src="{{ asset('bundles/mdycore/images/loading.gif') }}"/>');
+					$('#myModal').modal('show');
+				},
+			success: function(data){
+					$('#data').html(data);
+					$('#myModal').modal('hide');
+					if( donnees["filtre"] == "inli") {
+						loadScript();
+					}
+				},
+			error:	function(data){
+					$('#data').html(data);
+					$('#myModal').modal('hide');
+				}
+			});
+	})
+});
+function loadScript(){
+	var script = document.createElement('script');
+	script.type = "text/javascript";
+	script.src = "https://maps.googleapis.com/maps/api/js?key=AIzaSyBlcJWe-LaVlQq-jUjL6KJf04KhouRfsks&callback=initMap&language=fr&v=3";
+	document.body.appendChild(script);
+}
+	var map;
+	function initMap() {
+		  map = new google.maps.Map(document.getElementById('map'), {
+			center: {lat: 50.430872, lng: 6.0305917},
+			zoom: 12.17
+		  });
+	}
+</script>
+{% endblock %}

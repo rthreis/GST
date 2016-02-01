@@ -1,0 +1,15 @@
+{# src/Mdy/GstBundle/Resources/views/Gst/Equipe/restore.html.twig #}
+
+{% extends ("MdyGstBundle::layout.html.twig") %}
+
+{% block contenu %}
+<h3>Restaurer une équipe</h3>
+<p>Êtes vous certains de vouloir restaurer l'équipe : {{ equipe.nom }} ?</p>
+
+<form action="{{ path('mdy_gst_restoreEquipe', {'id': equipe.id}) }}" method="post">
+<a href="{{ path('mdy_gst_listEquipe') }}" class="btn btn-default" role="button">Retour à la liste des équipes</a>
+<input type="submit" value="Restaurer" class="btn btn-success"/>
+{{ form_rest(form) }}
+</form>
+
+{% endblock %}

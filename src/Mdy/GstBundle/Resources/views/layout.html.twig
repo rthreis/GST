@@ -1,0 +1,55 @@
+{# src/Mdy/GstBundle/Resources/views/layout.html.twig #}
+
+{% extends "MdyCoreBundle::layout.html.twig" %}
+{% if form is defined %}
+	{% form_theme form 'MdyGstBundle:Form:fields.html.twig' %}
+{% endif %}
+{% block title %}
+Gestion des Services Techniques
+{% endblock %}
+
+{% block encart %}
+	{% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+	<div class="no-print">
+		Connecté en tant que {{ app.user.username }}
+	</div>
+	{% endif %}
+{% endblock %}
+
+{% block titre %}
+<h2>Gestion des Services Techniques</h2>
+{% endblock %}
+
+{% block menu %}
+{{ render(controller("MdyGstBundle:Gst:menu")) }}
+{% endblock %}
+
+{% block flashbag %}
+	{% set confirm = app.session.flashbag.get('confirm') %}
+	{% set info = app.session.flashbag.get('info') %}
+	{% set error = app.session.flashbag.get('error') %}
+	{% if confirm|length > 0 %}
+		<div class="alert alert-success no-print" role="alert">
+		{% for message in confirm %}
+			<p>{{ message }}</p>
+		{% endfor %}
+		</div>
+	{% endif %}
+	{% if info|length > 0 %}
+		<div class="alert alert-info no-print" role="alert">
+		{% for message in info %}
+			<p>{{ message }}</p>
+		{% endfor %}
+		</div>
+	{% endif %}
+	{% if error|length > 0 %}
+		<div class="alert alert-danger no-print" role="alert">
+		{% for message in error %}
+			<p>{{ message }}</p>
+		{% endfor %}
+		</div>
+	{% endif %}
+{% endblock %}
+
+{% block contenu %}
+{% endblock %}

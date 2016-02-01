@@ -1,0 +1,9 @@
+# src/OC/PlatformBundle/Resources/config/services.yml
+
+parameters:
+    days:   30
+
+services:
+    oc_platform.advert_purger:
+        class:  OC\PlatformBundle\Purger\OCAdvertPurger
+        arguments:  [@doctrine, days]

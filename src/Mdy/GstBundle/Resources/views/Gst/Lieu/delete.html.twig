@@ -1,0 +1,15 @@
+{# src/Mdy/GstBundle/Resources/views/Gst/Lieu/delete.html.twig #}
+
+{% extends ("MdyGstBundle::layout.html.twig") %}
+
+{% block contenu %}
+<h3>Supprimer le lieu</h3>
+<p>Êtes vous certains de vouloir supprimer le lieu : {{ lieu.nom }} ?</p>
+
+<form action="{{ path('mdy_gst_removeLieu', {'id': lieu.id}) }}" method="post">
+<a href="{{ path('mdy_gst_listLieu') }}" class="btn btn-success" role="button">Retour à la liste des lieux</a>
+<input type="submit" value="Supprimer" class="btn btn-danger"/>
+{{ form_rest(form) }}
+</form>
+
+{% endblock %}

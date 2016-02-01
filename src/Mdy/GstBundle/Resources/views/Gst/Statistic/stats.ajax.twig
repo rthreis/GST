@@ -1,0 +1,29 @@
+<p>Valeur de filtre: {{filtre}}</p>
+{% if stats is empty %}
+<p class="bg-danger">Aucun élément a afficher</p>
+{% else %}
+	{{ stats|length}}
+	<table>
+	{% if filtre == "inli" %}
+		<tr><th>Lieu</th><th>Nombre d'interventions</th></tr>
+	{% elseif filtre == "ineq" %}
+		<tr><th>Equipe</th><th>Nombre d'interventions</th></tr>
+	{% elseif filtre == "depe" %}
+		
+	{% elseif filtre == "eqli" %}
+		<tr><th>Lieu</th><th>Équipes</th><th>Nombre d'interventions</th></tr>
+	{% endif %}
+	{% if filtre == "inli" or filtre == "ineq" %}
+		{% for stat in stats %}
+			<tr><td>{{ stat.nom }}</td><td>{{stat.total}}</td>
+		{% endfor %}
+	{% elseif filtre == "eqli" %}
+		{% for stat in stats %}
+			<tr><td>{{ stat.nomLieu }}</td><td>{{stat.nomEquipe}}</td><td>{{stat.nbInterventions}}</td></tr>
+		{% endfor %}
+	{% endif %}
+	</table>
+	{% if filtre == "inli" %}
+	<div id="map" style="width:100%; border: 1px solid black; height:400px;"></div>
+	{% endif %}
+{% endif %}

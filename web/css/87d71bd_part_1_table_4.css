@@ -1,0 +1,12 @@
+.even{
+background-color: #cccccc;
+}
+.odd{
+background-color: #ffffff;
+}
+table{
+width: 100%;
+}
+table th, table td{
+border-right: 1px dotted black;
+}

@@ -1,0 +1,187 @@
+{#
+/**
+ * File :	view.html.twig
+ * Bundle : MdyGstBundle
+ * Path :	src/Mdy/GstBundle/Resources/views/Gst/Intervention
+ * Since :	--
+ * Update :	30/12/2015
+ * Author :	R. Threis
+ */
+#}
+{% extends ("MdyGstBundle::layout.html.twig") %}
+
+{% block contenu %}
+<h4 class="no-print">Détails de la note 
+{% if intervention.dateCloture == "" and is_granted("ROLE_REDACTEUR")%}
+	<a href="{{ path('mdy_gst_editIntervention', {'id': intervention.id}) }}">
+	<span class="glyphicon glyphicon-edit no-print"></span>
+	</a>
+	<a href="{{ path('mdy_gst_clotureIntervention', {'id': intervention.id}) }}"><span class="glyphicon glyphicon-lock no-print"></span></a>
+{% endif %}
+	<a href=""><span class="glyphicon glyphicon-print no-print" onclick="impression()"></span></a>
+	{% if precedent is not empty %}
+	<a href="{{ path('mdy_gst_viewIntervention', {'id': precedent[0].id}) }}"><span class="glyphicon glyphicon-backward"></span></a>
+	{%endif%}
+	{% if suivant is not empty %}
+	<a href="{{ path('mdy_gst_viewIntervention', {'id': suivant[0].id}) }}"><span class="glyphicon glyphicon-forward"></span></a>
+	{%endif%}
+</h4>
+<div class="intervention container" id="intervention-{{intervention.id}}">
+<div class="printable">
+	{% set hauteur = intervention.equipes|length/2%}
+	<div class="row{{hauteur|round}}" >
+		<div class="col-md-4">
+			{{intervention.auteur|upper|slice(0,2)}}&nbsp;&nbsp;<label>Service :</label>
+			{% if intervention.equipes|length > 0 %}
+				{% for equipe in intervention.equipes %}
+					{{equipe.nom}}
+					{% if not loop.last %}, {%endif%}
+				{% endfor%}
+			{% endif %}
+		</div>
+		<div class="col-md-4" id="date">
+			<label>Date: </label>{{intervention.dateDemande|date('d/m/Y')}}
+		</div>
+		<div class="col-md-4" id="numero">
+			<label>N°: </label>{{intervention.numero}}
+		</div>
+	</div>
+	<div class="row" >
+	{% if intervention.demandeur is not empty %}
+		<div class="col-md-12" id="demandeur">
+			<label>Demandeur : </label>{{intervention.demandeur}}
+			{% if intervention.contact is not empty %}
+				<label>Tél./gsm : </label>{{intervention.contact}}
+			{% endif %}
+		</div>
+	{%endif%}
+	</div>
+	<div class="row" >
+		<div class="col-md-6" id="lieu"><label>Où :</label> {% if intervention.lieu.nom is not empty %}{{intervention.lieu.nom}}{% endif %}
+		{% if intervention.lieu.rue is not empty %}{{intervention.lieu.rue}}{%endif%}{% if intervention.lieu.numero is not empty %}, {{intervention.lieu.numero}}{%endif%}
+		</div>
+	</div>
+	{% if intervention.objet is not empty %}
+	<div class="row" >
+		<div class="col-md-12" id="objet"><label>Objet:</label> {{intervention.objet}}</div>
+	</div>
+	{% endif %}
+	<div class="row3">
+		<div class="col-md-12" id="descrpiption">
+			<label>Détails :</label><br/>{{intervention.contenu}}
+		</div>
+	</div>
+
+{% if intervention.approbations|length > 0 %}
+	{% if intervention.approbations|length > 1 %}
+		<div class="row2">
+	{% else %}
+		<div class="row" >
+	{% endif %}
+	{% for approbation in intervention.approbations %}
+		<p id="approbation">
+		{% if approbation.roleApprobateur == 'ROLE_DIRECTEUR' %}
+			Approbation de la Directrice obtenue le {{approbation.dateApprobation|date('d/m/Y')}} par {{approbation.user.username}}.<br/>
+		{% elseif approbation.roleApprobateur == 'ROLE_ECHEVIN' %}
+			Approbation de l'échevin obtenue le {{approbation.dateApprobation|date('d/m/Y')}} par {{approbation.user.username}}.
+		{%endif%}
+		</p>
+	{% endfor %}
+	</div>
+{% else %}
+	{% if intervention.accEchReq == true or intervention.accDirReq == true %}
+	<p id="approbation" class="alert alert-warning no-print" role="alert">
+		{% if intervention.accDirReq == true %}
+			Approbation de la Directrice des travaux requises !<br/>
+		{% endif %}
+		{% if intervention.accEchReq == true %}
+			Approbation de l'Echevin des Travaux requises !
+		{%endif%}
+	</p>
+	{%endif %}
+{% endif %}
+{% if intervention.clotures|length < 1 %}
+<div class="row2">
+	<div class="col-md-12">
+		<label>Travaux complémentaires :</label>
+		<p></p>
+	</div>
+</div>
+
+<div class="row" >
+	<div class="col-md-4"><label>Temps de prestations :&nbsp;</label></div>
+	<div class="col-md-4"><label>(Nbre ouvriers :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)</label></div>
+	<div class="col-md-4"><label>Date de fin d'intervention :</label></div>
+</div>
+<div class="row" >
+	<div><label>Signature lisible :</label></div>
+</div>
+{% else %}
+{% for cloture in intervention.clotures %}
+	<div class="row2">
+		<div class="col-md-12">
+			<label>Travaux complémentaires :</label>
+			{% if cloture.travaux is not empty %}
+			<p>{{ cloture.travaux }}</p>
+			{% endif %}
+		</div>
+	</div>
+
+	<div class="row" >
+		<div class="col-md-4"><label>Temps de prestations :&nbsp;</label>{% if cloture.duree is not empty %}{{cloture.duree}}{%endif%}</div>
+		<div class="col-md-4"><label>(Nbre ouvriers :{% if cloture.nbOuvrier is not empty %}{{ cloture.nbOuvrier }}{%else%}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{%endif%})</label></div>
+		<div class="col-md-4"><label>Date de fin d'intervention :</label>{% if cloture.dateCloture is not empty %}{{ cloture.dateCloture|date('d/m/Y') }}{%else%}&nbsp;{%endif%}</div>
+	</div>
+{% endfor %}
+{% endif %}
+{% if intervention.fichiers|length > 0 %}
+	<div class="thumbnails no-print">
+	{% for fichier in intervention.fichiers %}
+		{% if fichier.url in ['png', 'jpg', 'jpeg', 'gif'] %}
+			<img src="{{ asset(fichier.webPath) }}" alt="{{ fichier.alt }}" class="thumbs" onClick="magnify('{{ asset(fichier.webPath) }}')"/>
+			<a href="{{ path("mdy_gst_deleteFichier", {'fichier': fichier.id , 'intervention': intervention.id}) }}"><img src="{{asset('bundles/mdycore/images/delete.png')}}" class="icone" title="Supprimer le fichier"/></a>
+		{% elseif fichier.url in ['doc', 'docx'] %}
+			<a href="{{ asset(fichier.webPath) }}"><img src="{{asset('bundles/mdygst/images/word.png')}}" class="icone" title="Document de type Word" />
+			{{fichier.alt}}</a>
+		{% elseif fichier.url in ['xls', 'xlsx'] %}
+			<a href="{{ asset(fichier.webPath) }}" ><img src="{{asset('bundles/mdygst/images/excel.png')}}" class="icone" title="Document de type Excel" />{{fichier.alt}}</a>
+		{% elseif fichier.url in ['pdf'] %}
+			<a href="{{ asset(fichier.webPath) }}"><img src="{{asset('bundles/mdygst/images/adobe.png')}}" class="icone" title="Document de type PDF" />{{fichier.alt}}</a>
+		{% endif %}
+	{% endfor %}
+	</div>
+{% endif %}
+
+{% if intervention.remarques is not empty %}
+	<div class="remarque">
+	{% for remarque in intervention.remarques %}
+		<div class="panel panel-info">
+			<div class="panel-heading">Remarque de {{ remarque.auteur }}</div>
+			<div class="panel-body">{{remarque.contenu}}</div>
+		</div>
+	{% endfor %}
+	</div>
+{% endif %}
+</div>
+</div>
+{% endblock %}
+{% block javascripts %}
+{{ parent() }}
+<script type="text/javascript">
+function magnify($chemin){
+	$('#myModal').modal('show');
+	$code = '<img src="'+$chemin+'" class="img-responsive"/>';
+			$('div.modal-body').html($code);
+}
+
+function impression(){
+	$.ajax({
+		type:	"GET",
+		url:	"{{ path('mdy_gst_printIntervention', {'id': intervention.id})}}",
+		cache:	true
+	});
+	window.print();
+	
+}
+</script>
+{% endblock %}

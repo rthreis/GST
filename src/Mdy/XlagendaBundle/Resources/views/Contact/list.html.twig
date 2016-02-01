@@ -1,0 +1,33 @@
+{# src/Mdy/XlagendaBundle/Resources/views/Contact/list.html.twig #}
+
+{% extends ("MdyXlagendaBundle::layout.html.twig") %}
+
+{% block contenu %}
+<h3>Liste des contacts</h3>
+{% if filter != "dele" %}
+	<a href="{{ path('mdy_xlagenda_contact_list', {'filter': 'dele'}) }}" class="btn btn-warning" role="button"><span class="glyphicon glyphicon-trash"></span> Afficher les contacts supprimés</a>
+{% endif %}
+{% if filter == "dele" %}
+	<a href="{{ path('mdy_xlagenda_contact_list', {'filter': 'none'}) }}" class="btn btn-warning" role="button"><span class="glyphicon glyphicon-list-alt"></span> Afficher les contacts</a>
+{% endif %}
+
+{% if listContacts is defined %}
+	<table class="table table-striped">
+	<tr><th>Nom</th><th>Téléphone</th><th>Email</th><th>Action</th></tr>
+	{% for contact in listContacts %}
+		<tr>
+			<td>{{ contact.nom }}</td>
+			<td>{{ contact.telephone }}<br>{{contact.phone}}</td>
+			<td>{{ contact.email }}</td>
+			<td>
+				<a href="{{ path('mdy_xlagenda_contact_edit', {'id': contact.id}) }}"><span class="glyphicon glyphicon-edit"></span></a>
+				<a href="{{ path('mdy_xlagenda_contact_delete', {'id': contact.id}) }}" id="deleteContact"><span class="glyphicon glyphicon-remove" title="Supprimer"></span></a>
+			{% if filter == "deleted" %}
+				<a href="{{ path('mdy_gst_restoreLieu', {'id': lieu.id}) }}"><img src="{{ asset('bundles/mdycore/images/glyphicons-222-unshare.png') }}"/></a>
+			{% endif %}
+			</td>
+		</tr>
+	{% endfor %}
+	</table>
+{% endif %}
+{% endblock %}

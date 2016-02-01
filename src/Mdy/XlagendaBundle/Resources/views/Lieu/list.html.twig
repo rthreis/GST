@@ -1,0 +1,36 @@
+{# src/Mdy/XlagendaBundle/Resources/views/Lieu/list.html.twig #}
+
+{% extends ("MdyXlagendaBundle::layout.html.twig") %}
+
+{% block contenu %}
+<h3>Liste des lieux</h3>
+<a href="{{ path('mdy_xlagenda_lieu_add') }}" class="btn btn-primary" role="button"><span class="glyphicon glyphicon-plus"></span> Ajouter un lieu</a>
+{% if filter != "dele" %}
+	<a href="{{ path('mdy_xlagenda_lieu_list', {'filter': 'dele'}) }}" class="btn btn-warning" role="button"><span class="glyphicon glyphicon-trash"></span> Afficher les lieux supprimés</a>
+{% endif %}
+{% if filter == "dele" %}
+	<a href="{{ path('mdy_xlagenda_lieu_list', {'filter': 'none'}) }}" class="btn btn-warning" role="button"><span class="glyphicon glyphicon-list-alt"></span> Afficher les lieux non supprimés</a>
+{% endif %}
+
+{% if listLieu is defined %}
+	<table class="table table-striped">
+	<tr><th>Nom</th><th>Adresse</th><th>Localité</th><th>Action</th></tr>
+	{% for lieu in listLieu %}
+		<tr>
+			<td>FR : {{ lieu.nom }}<br>
+				DE : {{ lieu.translate('de').nom }}<br>
+				NL : {{ lieu.translate('nl').nom }}
+				</td>
+			<td>{{ lieu.rue }}{% if lieu.numero is not empty %}, {{ lieu.numero }}{% endif %}</td>
+			<td>{{ lieu.localite }}</td>
+			<td><a href="{{ path('mdy_xlagenda_lieu_edit', {'id': lieu.id}) }}"><span class="glyphicon glyphicon-edit"></span></a>
+				<a href="{{ path('mdy_xlagenda_lieu_delete', {'id': lieu.id}) }}" id="deleteLieu"><span class="glyphicon glyphicon-remove" title="Supprimer"></span></a>
+			{% if filter == "deleted" %}
+				<a href="{{ path('mdy_gst_restoreLieu', {'id': lieu.id}) }}"><img src="{{ asset('bundles/mdycore/images/glyphicons-222-unshare.png') }}"/></a>
+			{% endif %}
+			</td>
+		</tr>
+	{% endfor %}
+	</table>
+{% endif %}
+{% endblock %}

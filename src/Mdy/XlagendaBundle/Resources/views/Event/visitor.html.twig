@@ -1,0 +1,104 @@
+{# src/Mdy/XlagendaBundle/Resources/views/Event/list.html.twig #}
+
+{% extends ("MdyXlagendaBundle::layout.html.twig") %}
+
+{% block javascripts %}
+{{ parent() }}
+<script type="text/javascript">
+$(function() {
+	$( "#dateDebut" ).datepicker({dateFormat:"dd-mm-yy", firstDay:1});
+	});
+$(function() {
+	$("#dateFin").datepicker({dateFormat:"dd-mm-yy", firstDay:1});
+	});
+	
+function appliqueFiltre(e){
+	e.preventDefault();
+	var monForm = $("#filtre");
+	$.ajax({
+		type:"POST",
+		url: "#",
+		cache:true,
+		data: monForm.serialize(),
+		beforeSend: function(){
+					
+				},
+		success: function(data){
+					$("#events").html(data);
+				},
+	});
+}
+$("#dateDebut").change(function(e){appliqueFiltre(e)});
+$("#dateFin").change(function(e){appliqueFiltre(e)});
+$("#rubrique").change(function(e){appliqueFiltre(e)});
+$("#lieu").change(function(e){appliqueFiltre(e)});
+
+</script>
+{% endblock %}
+{% block menu %}
+{# Il faut ajouter ici les "menus" relatifs aux actions autorisées pour les 
+utilisateurs anonymes #}
+	<div class="panel panel-default">
+	<div class="panel-heading">Choisir un filtre <span class="glyphicon glyphicon-filter"></span></div>
+	<div class="panel-body">
+	<form action="{{ path("mdy_xlagenda_event_list") }}" id="filtre">
+		Début : <input type="dateTime" id="dateDebut" name="dateDebut"/><br/>
+		Fin : <input type="dateTime" id="dateFin" name="dateFin"/><br/>
+		{% if listRubrique is defined and listRubrique|length > 0%}
+		Rubrique <select id="rubrique" name="rubrique">
+		<option value="0">-- Sélectionner une rubrique --</option>
+		{% for rubrique in listRubrique %}
+		<option value="{{ rubrique.id }}">{{ rubrique.nom }}</option>
+		{% endfor %}
+		</select>
+		<br/>
+		{% endif %}
+		{% if listLieu is defined and listLieu|length > 0%}
+		Lieu <select id="lieu" name="lieu">
+		<option value="0">-- Sélectionner un lieu --</option>
+		{% for lieu in listLieu %}
+		<option value="{{ lieu.id }}">{{ lieu.nom }}</option>
+		{% endfor %}
+		</select>
+		{% endif %}
+	</form>
+	</div>
+	</div>
+<a href="{{ path('mdy_xlagenda_event_add') }}" class="btn btn-default">Se connecter</a>
+{% endblock %}
+{% block contenu %}
+{% if listEvent is defined %}
+	{% for event in listEvent %}
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3 class="panel-title">{{ event.translate('fr').nom }} @ {{ event.lieu.translate('fr').nom }}</h3>
+			</div>
+			<div class="panel-body">
+				<div class="row">
+					{% if event.affiche is not empty %}
+						<div class="col-md-4" >
+							<a href="{{ asset(event.affiche.webPath) }}" class="thumbnail" >
+								<img src="{{ asset(event.affiche.webPath) }}" alt="{{ event.affiche.alt }}"/>
+							</a>
+						</div>
+						<div class="col-md-8">
+					{% else %}
+						<div class="col-md-12">
+					{% endif %}
+					{% if event.fin is null %}
+						Le {{ event.debut|date('d-m-Y') }} à {{ event.debut|date('H:i') }}
+					{% else %}
+						Du {{ event.debut|date('d-m-Y') }} à {{ event.debut|date('H:i') }} au {{ event.fin|date('d-m-Y') }} à {{ event.fin|date('H:i') }}
+					{% endif %}
+						<p>
+							{{ event.translate('fr').description|raw }}
+						</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	{% endfor %}
+{% else %}
+	<p>Pas d'événements à afficher</p>
+{% endif %}
+{% endblock %}

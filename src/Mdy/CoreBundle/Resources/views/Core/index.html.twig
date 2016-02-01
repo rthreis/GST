@@ -1,0 +1,9 @@
+{# src/Mdy/CoreBundle/Resources/views/Core/index.html.twig #}
+
+{% extends "MdyCoreBundle::layout.html.twig" %}
+
+{% block contenu %}
+{% if name is defined %}
+{{ name }}
+{% endif %}
+{% endblock %}

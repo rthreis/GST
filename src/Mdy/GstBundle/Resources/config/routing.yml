@@ -1,0 +1,132 @@
+# src/Mdy/GstBundle/Resources/config/routing.yml
+# page d'accueil
+mdy_gst_homepage:
+    path:       /
+    defaults:   { _controller: MdyGstBundle:Gst:index }
+# routes pour la gestion des équipes
+mdy_gst_addEquipe:
+    path:       /equipe/add
+    defaults:   { _controller: MdyGstBundle:Equipe:add }
+mdy_gst_removeEquipe:
+    path:       /equipe/delete/{id}
+    defaults:   { _controller: MdyGstBundle:Equipe:delete }
+    requirements:
+        id:     \d*
+mdy_gst_editEquipe:
+    path:       /equipe/edit/{id}
+    defaults:   { _controller: MdyGstBundle:Equipe:edit }
+    requirements:
+        id:     \d*
+mdy_gst_listEquipe:
+    path:       /equipe/list/{filter}
+    defaults:   { _controller: MdyGstBundle:Equipe:list, filter: none}
+    requirements:
+        filter: none|deleted
+mdy_gst_restoreEquipe:
+    path:       /equipe/restore/{id}
+    defaults:   { _controller: MdyGstBundle:Equipe:restore }
+    requirements:
+        id:     \d*
+
+# routes pour la gestion des interventions
+mdy_gst_resetIntervention:
+    path:       /intervention/reset
+    defaults:   { _controller: MdyGstBundle:Intervention:reset }
+mdy_gst_addIntervention:
+    path:       /intervention/add
+    defaults:   { _controller: MdyGstBundle:Intervention:add }
+mdy_gst_editIntervention:
+    path:       /intervention/edit/{id}
+    defaults:   { _controller: MdyGstBundle:Intervention:edit }
+    requirements:
+        id:     \d*
+mdy_gst_removeIntervention:
+    path:       /intervention/delete/{id}
+    defaults:   { _controller: MdyGstBundle:Intervention:delete }
+    requirements:
+        id:     \d*
+mdy_gst_viewIntervention:
+    path:       /intervention/{id}
+    defaults:   { _controller: MdyGstBundle:Intervention:view }
+    requirements:
+        id: \d*
+mdy_gst_listIntervention:
+    path:       /intervention/list/{filter}/{page}/{equipe}
+    defaults:   { _controller: MdyGstBundle:Intervention:list, filter: none, page: 1, equipe: 0 }
+    requirements:
+        filter: none|clos|nass|nack|ack|prin|nprin|del
+        page: \d*
+        equipe: \d*
+mdy_gst_exportIntervention:
+    path:       /intervention/export
+    defaults:   { _controller: MdyGstBundle:Intervention:export }
+mdy_gst_printIntervention:
+    path:       /intervention/print/{id}
+    defaults:   { _controller: MdyGstBundle:Intervention:print }
+    requirements:
+        id: \d*
+mdy_gst_assigneEquipe:
+    path:       /intervention/assigne/{id}
+    defaults:   { _controller: MdyGstBundle:Intervention:assignation }
+    requirements:
+        id:     \d*
+mdy_gst_approuveIntervention:
+    path:       /intervention/approuve/{id}
+    defaults:   { _controller: MdyGstBundle:Intervention:approbation }
+    requirements:
+        id:     \d*
+mdy_gst_clotureIntervention:
+    path:       /intervention/cloture/{id}
+    defaults:   { _controller: MdyGstBundle:Intervention:cloture }
+    requirements:
+        id:     \d*
+mdy_gst_searchIntervention:
+    path:       /intervention/recherche
+    defaults:   { _controller: MdyGstBundle:Intervention:recherche }
+mdy_gst_deleteFichier:
+    path:       /fichier/delete/{fichier}/{intervention}
+    defaults:   { _controller: MdyGstBundle:Intervention:deleteFichier }
+    requirements:
+        fichier:      \d*
+        intervention: \d*
+
+# routes pour la gestion des lieux
+mdy_gst_addLieu:
+    path:       /lieu/add
+    defaults:   { _controller: MdyGstBundle:Lieu:add }
+mdy_gst_editLieu:
+    path:       /lieu/edit/{id}
+    defaults:   { _controller: MdyGstBundle:Lieu:edit }
+    requirements:
+        id:     \d*
+mdy_gst_removeLieu:
+    path:       /lieu/delete/{id}
+    defaults:   { _controller: MdyGstBundle:Lieu:delete }
+    requirements:
+        id:     \d*
+mdy_gst_listLieu:
+    path:       /lieu/list/{filter}
+    defaults:   { _controller: MdyGstBundle:Lieu:list, filter: none }
+    requirements:
+        filter: none|deleted
+mdy_gst_restoreLieu:
+    path:       /lieu/restore/{id}
+    defaults:   { _controller: MdyGstBundle:Lieu:restore }
+    requirements:
+        id:     \d*
+    
+#routes pour la gestion des remarques
+mdy_gst_addRemarque:
+    path:       /remarque/add/{id}
+    defaults:   { _controller: MdyGstBundle:Remarque:add }
+    requirements:
+        id: \d*
+
+#routes pour la gestion des statistiques
+mdy_gst_stats:
+    path:       /stats
+    defaults:   { _controller: MdyGstBundle:Statistic:stats }
+
+mdy_gst_calculate:
+    path:       /calculate
+    defaults:   { _controller: MdyGstBundle:Statistic:calculate }

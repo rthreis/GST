@@ -1,0 +1,21 @@
+{# src/Mdy/GstBundle/Resources/views/Gst/Internvention/assignation.html.twig #}
+
+{% extends ("MdyGstBundle::layout.html.twig") %}
+
+{% block contenu %}
+	{% for message in app.session.flashbag.get('info') %}
+		<p>{{ message }}</p>
+	{% endfor %}
+<h3>Approuver une demande</h3>
+{{dump(intervention)}}
+<div>
+<p><label>Numéro : </label>{{intervention.numero}}</p>
+<p><label>Objet : </label>{{intervention.objet}}</p>
+<p><label>Détails :</label><blockquote>{{intervention.contenu}}</blockquote></p>
+</div>
+{{form(form)}}
+{% endblock %}
+
+{% block javascripts %}
+
+{% endblock %}

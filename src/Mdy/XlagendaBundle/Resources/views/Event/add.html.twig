@@ -1,0 +1,75 @@
+{# src/Mdy/XlagendaBundle/Resources/views/Event/add.html.twig #}
+
+{% extends ("MdyXlagendaBundle::layout.html.twig") %}
+
+{% block contenu %}
+<h3>Ajouter un événement</h3>
+{{form(form)}}
+{% endblock %}
+
+{% block javascripts %}
+{{ parent() }}
+<script type="text/javascript">
+$(function() {
+	$( "#mdy_xlagendabundle_event_debut" ).datetimepicker({format:"YYYY-MM-DD HH:mm", stepping: 10});
+});
+$(function() {
+	$( "#mdy_xlagendabundle_event_fin" ).datetimepicker({format:"YYYY-MM-DD HH:mm", stepping: 10});
+	});
+
+$(document).ready(function(){
+	var $container = $('div#mdy_xlagendabundle_event_contacts');
+	var $addContact = $('<a href="#" id="addContact" class="btn btn-success">Ajouter un contact</a>');
+	$container.append($addContact);
+	
+	$addContact.click(function(e) {
+		ajoutContact($container);
+		e.preventDefault();
+		return false;
+	});
+	var index = $container.find(':input').length;
+	
+	if(index == 0){
+		{#ajoutContact($container);#}
+	}
+	else{
+		$container.children('div').each(function(){
+			addLienSupprimerContact($(this));
+		});
+	}
+	
+	function ajoutContact($container){
+		var $prototype= $($container.attr('data-prototype').replace(/__name__label__/g, 'Contact n°' + (index+1)).replace(/__name__/g, index));
+		addLienSupprimerContact($prototype);
+		$container.append($prototype);
+		index++;
+	}
+	
+	function addLienSupprimerContact($prototype){
+		$lienSupprimerContact = $('<a href="#" class="btn btn-danger">Supprimer</a>');
+		$prototype.append($lienSupprimerContact);
+		$lienSupprimerContact.click(function(e){
+			$prototype.remove();
+			e.preventDefault();
+			return false;
+			
+		});
+	}
+	
+	var $btnAddLieu = $('#mdy_xlagendabundle_event_addLieu');
+	var $formAddLieu = $('#mdy_xlagenda_form_addLieu');
+	
+	$btnAddLieu.click(function(e){
+		$.ajax({
+			type: 	"GET",
+			url:	"{{path('mdy_xlagenda_lieu_add')}}",
+			cache:	true,
+			success: function(data){
+						$('#myModal').modal('show');
+						$('div.modal-body').html(data);
+					}
+			})
+	});
+});
+</script>
+{% endblock %}

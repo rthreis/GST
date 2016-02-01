@@ -1,0 +1,33 @@
+{# src/Mdy/GstBundle/Resources/views/Gst/Lieu/list.html.twig #}
+
+{% extends ("MdyGstBundle::layout.html.twig") %}
+
+{% block contenu %}
+<h3>Liste des lieux</h3>
+<a href="{{path('mdy_gst_addLieu')}}" class="btn btn-info" role="button"><span class="glyphicon glyphicon-plus"></span> Ajouter un lieu</a>
+{% if filter != "deleted" %}
+	<a href="{{ path('mdy_gst_listLieu', {'filter': 'deleted'}) }}" class="btn btn-warning" role="button"><span class="glyphicon glyphicon-trash"></span> Afficher les lieux supprimés</a>
+{% endif %}
+{% if filter == "deleted" %}
+	<a href="{{ path('mdy_gst_listLieu', {'filter': 'none'}) }}" class="btn btn-warning" role="button"><span class="glyphicon glyphicon-list-alt"></span> Afficher les lieux non supprimés</a>
+{% endif %}
+
+{% if listLieu is defined %}
+	<table class="table table-striped">
+	<tr><th>Nom</th><th>Adresse</th><th>Action</th></tr>
+	{% for lieu in listLieu %}
+		<tr>
+			<td>{{ lieu.nom }}</td>
+			<td>{{ lieu.rue }}{% if lieu.numero is not empty %}, {{ lieu.numero }}{% endif %}</td>
+			<td><a href="{{ path('mdy_gst_editLieu', {'id': lieu.id}) }}"><span class="glyphicon glyphicon-edit"></span></a>
+			{% if filter != "deleted" and is_granted("ROLE_SUPERVISEUR") %}
+				<a href="{{ path('mdy_gst_removeLieu', {'id': lieu.id}) }}" id="deleteLieu"><span class="glyphicon glyphicon-remove" title="Supprimer"></span></a>
+			{% elseif filter == "deleted" and is_granted("ROLE_SUPERVISEUR") %}
+				<a href="{{ path('mdy_gst_restoreLieu', {'id': lieu.id}) }}"><img src="{{ asset('bundles/mdycore/images/glyphicons-222-unshare.png') }}"/></a>
+			{% endif %}
+			</td>
+		</tr>
+	{% endfor %}
+	</table>
+{% endif %}
+{% endblock %}

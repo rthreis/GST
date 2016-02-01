@@ -1,0 +1,16 @@
+{# src/OC/PlatformBundle/Resources/views/Advert/index.html.twig #}
+
+{% extends "OCPlatformBundle::layout.html.twig" %}
+
+{% block title %}
+  Accueil - {{ parent() }}
+{% endblock %}
+
+{% block ocplatform_body %}
+{% if info is defined %}
+ {% for message in info %}
+	<p>{{ info }} </p>
+ {% endfor %}
+{% endif %}
+<p>{{ nbPurged }} </p>
+{% endblock %}

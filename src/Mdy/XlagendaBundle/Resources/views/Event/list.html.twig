@@ -1,0 +1,31 @@
+{# src/Mdy/XlagendaBundle/Resources/views/Event/list.html.twig #}
+
+{% extends ("MdyXlagendaBundle::layout.html.twig") %}
+{% block contenu %}
+<h3>Liste des actualités</h3>
+<a href="{{ path("mdy_xlagenda_event_add") }}" class="btn btn-primary" role="button"><span class="glyphicon glyphicon-plus"></span> Ajouter une actualité</a>
+{% if listEvent|length > 0 %}
+	<table class="table table-hover">
+	<tr>
+		<th>Nom</th>
+		<th>Description</th>
+		<th>Traduction</th>
+		<th>Affiche ?</th>
+		<th>Action</th>
+	</tr>
+	{% for event in listEvent %}
+		<tr {% if event.publication == 0 %}class="warning"{% endif %}>
+			<td>{{ event.translate('fr').nom }}</td>
+			<td>{{ event.translate('fr').description|truncate(15, true) }}</td>
+			<td>{% if event.translate('de').nom|length > 0 %}{{ event.translate('de').nom }}{% endif %}</td>
+			<td>{% if event.affiche is not empty %}OUI{% else %}NON{% endif%}</td>
+			<td>
+				<a href="{{ path('mdy_xlagenda_event_edit', {'id' : event.id}) }}" ><span class="glyphicon glyphicon-edit" title="Modifier l'événement"></span></a>
+			</td>
+		</tr>
+	{% endfor %}
+	</table>
+{% else %}
+	<p>Pas d'événements à afficher</p>
+{% endif %}
+{% endblock %}

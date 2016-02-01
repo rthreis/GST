@@ -1,0 +1,80 @@
+/**
+ * File :	print.css
+ * Bundle : MdyGstBundle
+ * Path :	src/Mdy/GstBundle/Resources/public/css/
+ * Since :	--
+ * Update :	07/10/2015
+ * Author :	R. Threis
+ */
+@media print{
+@page {
+margin: 0.5cm;
+}
+div.intervention.container{
+	width: 190mm;
+	height: 130mm;
+padding: 0;
+margin: 0;
+}
+body{
+background-color: white !important;
+font-size: 12pt;
+}
+div{
+font: Verdana 12pt;
+}
+div.row{
+padding: 0;
+margin: 0;
+width: 190mm;
+min-height: 5mm;
+max-height: 10mm;
+}
+div.row2{
+width: 190mm;
+height: 15mm;
+}
+div.row3{
+width: 190mm;
+height: 50mm;
+}
+.no-print{
+display: none;
+}
+div.printable{
+}
+.col-md-1{
+display: inline-block;
+width: 15.8mm;
+padding: 0;
+margin: 0;
+}
+.col-md-4{
+display: inline-block;
+vertical-align: top;
+width: 63mm;
+padding: 0mm;
+margin-left: -2mm;
+}
+.col-md-6{
+display: inline-block;
+max-width: 95mm;
+padding: 0;
+margin: 0;
+}
+.col-md-8{
+display: inline-block;
+max-width: 126mm;
+padding: 0;
+margin: 0;
+}
+.col-md-12{
+display: inline-block;
+max-width: 190mm;
+padding: 0;
+margin: 0;
+}
+div.jump{
+page-break-after: always;
+}
+}

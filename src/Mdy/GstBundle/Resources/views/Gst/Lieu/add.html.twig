@@ -1,0 +1,12 @@
+{# src/Mdy/GstBundle/Resources/views/Gst/Lieu/add.html.twig #}
+
+{% extends ("MdyGstBundle::layout.html.twig") %}
+
+{% block lieu %}
+{{ render(controller("MdyGstBundle:Lieu:menu")) }}
+{% endblock %}
+
+{% block contenu %}
+<h3>Ajouter un lieu</h3>
+{{ form(form) }}
+{% endblock %}

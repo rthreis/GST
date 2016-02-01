@@ -1,0 +1,21 @@
+div.thumbnails{
+background-color: #eee;
+height: 120px;
+padding: 10px;
+}
+img.thumbs{
+width: 100px;
+height: 100px;
+cursor: pointer;
+box-shadow: 5px 5px 2px grey;
+}
+img.thumbs:hover{
+box-shadow: none;
+}
+img.thumbs:click{
+width: 800px;
+}
+img.icone{
+width: 25px;
+height: 25px;
+}

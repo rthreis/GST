@@ -1,0 +1,13 @@
+<h3>Menu</h3>
+
+<a href="{{ path("mdy_core_index") }}" class="btn btn-default" role="button"><span class="glyphicon glyphicon-home"></span> Accueil</a>
+<a href="{{ path("mdy_gst_homepage") }}" class="btn btn-default" role="button"><span class="glyphicon glyphicon-tasks"></span> Gestion des Services Techniques</a>
+<a href="{{ path("mdy_xlagenda_event_list") }}" class="btn btn-default" role="button"><span class="glyphicon glyphicon-calendar"></span> Gestion des Actualités</a>
+{%if is_granted('ROLE_ADMIN') %}
+<a href="{{ path("mdy_user_list") }}" class="btn btn-default" role="button"><span class="glyphicon glyphicon-user"></span> Gestion des utilisateurs</a>
+{%endif %}
+{% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+<a href="{{ path("fos_user_security_logout") }}" class="btn btn-default" role="button"><span class="glyphicon glyphicon-log-out"></span> Se déconnecter</a></li>
+{% else %}
+<a href="{{ path("fos_user_security_login") }}" class="btn btn-default" role="button"><span class="glyphicon glyphicon-log-in"></span> Se connecter</a></li>
+{% endif %}

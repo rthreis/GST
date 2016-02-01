@@ -1,0 +1,66 @@
+{# src/Mdy/CoreBundle/Resources/views/layout.html.twig #}
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>{% block title %}{% endblock %}</title>
+{% block stylesheets %}
+	{% stylesheets '@MdyGstBundle/Resources/public/css/*'
+					'@MdyCoreBundle/Resources/public/css/*' %}
+		<link rel="stylesheet" href="{{ asset_url }}" type="text/css" >
+	{% endstylesheets %}
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+		<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.15.35/css/bootstrap-datetimepicker.css">
+{% endblock %}
+{% block javascripts %}
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/js/bootstrap.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.15.35/js/bootstrap-datetimepicker.min.js"></script>
+	{{ tinymce_init() }}
+{% endblock %}
+</head>
+<body>
+	<div class="container">
+		<div id="header" class="jumbotron no-print">
+			{% block titre %}{% endblock %}
+		</div>
+		<div id="encart" class="col-md-12 no-print">{% block encart %}{%endblock%}</div>
+		<div class="row">
+			<div id="menu" class="col-md-3 no-print">
+				{% block menu %}
+				{{ render(controller("MdyCoreBundle:Core:menu")) }}
+				{% endblock %}
+			</div>
+			<div id="content" class="col-md-9">
+				<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+					<div class="modal-dialog" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+							</div>
+							<div class="modal-body">
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				{% block flashbag %}
+				{% endblock %}
+				{% block contenu %}
+				{% endblock %}
+			</div>
+		</div>
+		<hr class="no-print">
+		<footer class="no-print">
+			<p>Réalisé par : R. Threis</p>
+		</footer>
+	</div>
+</body>
+</html>

@@ -1,0 +1,10 @@
+services:
+    mdy_gst.notificator:
+        class:  Mdy\GstBundle\Notificator\MdyNotificator
+        arguments:  [@mailer, @templating, @doctrine.orm.entity_manager]
+    mdy_gst.exist:
+        class:  Mdy\GstBundle\Exist\MdyExist
+        arguments:  [@doctrine.orm.entity_manager]
+#    mdy_gst.example:
+#        class: Mdy\GstBundle\Example
+#        arguments: [@service_id, "plain_value", %parameter%]

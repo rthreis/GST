@@ -1,0 +1,20 @@
+{# src/Mdy/XlagendaBundle/Resources/views/Event/edit.html.twig #}
+
+{% extends ("MdyXlagendaBundle::layout.html.twig") %}
+
+{% block contenu %}
+<h3>Modifier un événement</h3>
+{{form(form)}}
+{% endblock %}
+
+{% block javascripts %}
+{{ parent() }}
+<script type="text/javascript">
+$(function() {
+	$( "#mdy_xlagendabundle_event_edit_debut" ).datetimepicker({format:"YYYY-MM-DD HH:mm", stepping: 10});
+});
+$(function() {
+	$( "#mdy_xlagendabundle_event_edit_fin" ).datetimepicker({format:"YYYY-MM-DD HH:mm", stepping: 10});
+	});
+</script>
+{% endblock %}

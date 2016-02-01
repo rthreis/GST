@@ -1,0 +1,38 @@
+{# src/Mdy/UserBundle/Resources/views/layout.html.twig #}
+
+{% extends "MdyCoreBundle::layout.html.twig" %}
+
+{% block title %}
+	Gestion des utilisateurs
+{% endblock %}
+{% block titre %}
+<h2>Gestion des utilisateurs</h2>
+{% endblock %}
+
+{% block contenu %}
+
+	{# On affiche les messages flash que définissent les contrôleurs du bundle #}
+	{% block flashbag %}
+	{% set confirm = app.session.flashbag.get('confirm') %}
+	{% set info = app.session.flashbag.get('info') %}
+	{% if confirm|length > 0 %}
+		<div class="alert alert-success" role="alert">
+		{% for message in confirm %}
+			<p>{{ message }}</p>
+		{% endfor %}
+		</div>
+	{% endif %}
+	{% if info|length > 0 %}
+		<div class="alert alert-info" role="alert">
+		{% for message in info %}
+			<p>{{ message }}</p>
+		{% endfor %}
+		</div>
+	{% endif %}
+{% endblock %}
+
+	{# On définit ce block, dans lequel vont venir s'insérer les autres vues du bundle #}
+	{% block fos_user_content %}
+	{% endblock fos_user_content %}
+
+{% endblock %}

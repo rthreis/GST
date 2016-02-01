@@ -1,0 +1,38 @@
+{# src/Mdy/XlagendaBundle/Resources/views/Rubrique/list.html.twig #}
+
+{% extends ("MdyXlagendaBundle::layout.html.twig") %}
+
+{% block contenu %}
+<h3>Liste des rubriques</h3>
+
+<a href="{{ path("mdy_xlagenda_rubrique_add") }}" class="btn btn-primary" role="button"><span class="glyphicon glyphicon-plus"></span> Ajouter une rubrique</a>
+{% if filter != "dele" %}
+	<a href="{{ path('mdy_xlagenda_rubrique_list', {'filter': 'dele'}) }}" class="btn btn-warning" role="button"><span class="glyphicon glyphicon-trash"></span>Afficher les rubriques supprimées</a>
+{% endif %}
+{% if filter == "dele" %}
+	<a href="{{ path('mdy_xlagenda_rubrique_list', {'filter': 'none'}) }}" class="btn btn-warning" role="button">Afficher les rubriques non supprimées</a>
+{% endif %}
+{% if listRubrique is defined %}
+	<table class="table table-striped">
+	<tr><th>Nom [FR]</th><th>Nom [DE]</th><th>Nom [NL]</th><th>Action</th></tr>
+	{% for rubrique in listRubrique %}
+		<tr>
+			<td>{{ rubrique.nom }}</td>
+			<td>{{ rubrique.translate('de').nom }}</td>
+			<td>{{ rubrique.translate('nl').nom }}</td>
+			<td>
+				<a href="{{ path('mdy_xlagenda_rubrique_edit', {'id' : rubrique.id}) }}" ><span class="glyphicon glyphicon-edit" title="Modifier la rubrique"></span></a>
+			{% if filter != "dele" %}
+				<a href="{{ path('mdy_xlagenda_rubrique_delete', {'id' : rubrique.id}) }}" ><span class="glyphicon glyphicon-remove" title="Supprimer la rubrique"></span></a>
+			{% else %}
+				<a href="{{ path('mdy_xlagenda_rubrique_restore', {'id' : rubrique.id}) }}" ><span class="glyphicon glyphicon-ok" title="Restaurer la rubrique"></span></a>
+			{% endif %}
+			
+			</td>
+		</tr>
+	{% endfor %}
+	</table>
+{% else %}
+	<p>Pas de rubriques à afficher</p>
+{% endif %}
+{% endblock %}
